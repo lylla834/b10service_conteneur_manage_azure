@@ -1,0 +1,42 @@
+az login
+
+az provider register --namespace Microsoft.App
+
+az provider register --namespace Microsoft.OperationalInsights
+
+RESOURCE_GROUP="mycontainerappslylla"
+LOCATION="francecentral"
+CONTAINERAPPS_ENVIRONMENT="myenvironmentlylla"
+
+az group create \
+  --name $RESOURCE_GROUP \
+  --location $LOCATION
+  
+  az containerapp env create \
+  --name $CONTAINERAPPS_ENVIRONMENT \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION
+  
+ ##### az containerapp create \
+  --name mycontainerapplylla \
+  --resource-group $RESOURCE_GROUP \
+  --environment $CONTAINERAPPS_ENVIRONMENT \
+  --image mcr.microsoft.com/azuredocs/containerapps-helloworld:latest \
+  --target-port 80 \
+  --ingress 'external' \
+  --query properties.configuration.ingress.fqdn#####
+
+
+
+RESOURCE_GROUP="mycontainerappslylla"
+LOCATION="francecentral"
+ENVIRONMENT="myenvironmentlylla"
+API_NAME="lylla-api"
+FRONTEND_NAME="lylla-front"
+GITHUB_USERNAME="lylla834"
+
+ACR_NAME="container_registerlylla"lylla834
+
+git clone https://github.com/lylla834/containerapps-albumui.git codetocloud-ui
+
+az acr build --registry $ACR_NAME --image albumapp-ui .ls

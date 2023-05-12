@@ -1,0 +1,37 @@
+RESOURCE_GROUP="lyllabbrief10"
+LOCATION="francecentral"
+ENVIRONMENT="lyllaenvironment"
+API_NAME="node-azure-docker"
+FRONTEND_NAME="node-azure-dockerui"
+GITHUB_USERNAME="lylla834"
+
+
+
+az group create \
+  --name $RESOURCE_GROUP \
+  --location "$LOCATION"
+
+az acr create \
+  --resource-group $RESOURCE_GROUP \
+  --name $ACR_NAME \
+  --sku Basic \
+  --admin-enabled true
+  
+  
+git clone https://github.com/lylla834/node-azure-docker.git
+
+ACR_NAME="registry"$GITHUB_USERNAME
+az acr build --registry $ACR_NAME --image $API_NAME .
+
+
+az containerapp create \
+  --name $API_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --environment $ENVIRONMENT \
+  --image $ACR_NAME.azurecr.io/$API_NAME \
+  --target-port 5000 \
+  --ingress 'external' \
+  --registry-server $ACR_NAME.azurecr.io \
+  --query properties.configuration.ingress.fqdn
+  
+  
